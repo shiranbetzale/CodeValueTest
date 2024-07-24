@@ -4,7 +4,7 @@ import CustomImg from "./../CustomImg/CustomImg";
 import styles from "./Form.module.css";
 
 const Form = (props) => {
-  const { item } = props;
+  const { item, mode, onAdd, onEdit } = props;
 
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -42,6 +42,11 @@ const Form = (props) => {
 
     if (Object.keys(newErrors).length === 0) {
       // Form submission logic here
+      if (mode === "add") {
+        onAdd(formData);
+      } else {
+        onEdit(formData);
+      }
       console.log("Form is success!");
     } else {
       console.log(`Form has validation errors.`);

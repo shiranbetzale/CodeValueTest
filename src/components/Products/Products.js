@@ -3,7 +3,8 @@ import Card from "./../Card/Card";
 import Menu from "./../Menu/Menu";
 
 const Products = (props) => {
-  const { productsList, onClickEdit,onClickAdd } = props;
+  const { onClickDelete, productsList, onClickEdit, onClickAdd, sortByName } =
+    props;
   const [productsListAfterSearch, setProductsListAfterSearch] = useState();
   const [searchValue, setSearchValue] = useState();
 
@@ -12,22 +13,32 @@ const Products = (props) => {
     setProductsListAfterSearch(productsList);
   }, [productsList]);
 
-  const onClickDelete = (e) => {
-    e.stopPropagation();
-    alert("onClickDelete");
-  };
-
   const onSearch = (e) => {
     setSearchValue(e.target.value);
-    const filter = productsList.filter(
+    const copy = [...productsList];
+    const filter = copy.filter(
       (item) =>
-        item?.name?.includes(e.target.value) || item?.description?.includes(e.target.value)
+        item?.name?.includes(e.target.value) ||
+        item?.description?.includes(e.target.value)
     );
     setProductsListAfterSearch(filter);
   };
 
-  const onSelectChanged = () => {
-    alert("onSelectChanged");
+  const onSelectChanged = (e) => {
+    let afterSort;
+    if (e.target.value === "name") {
+      //sort by name
+      afterSort = sortByName(productsListAfterSearch);
+    } else {
+      //sort by date
+      afterSort = productsListAfterSearch?.sort(
+        (a, b) =>
+          new Date(...a.createdDate.split("/").reverse()) -
+          new Date(...b.createdDate.split("/").reverse())
+      );
+    }
+
+    setProductsListAfterSearch((prev) => [...prev], afterSort);
   };
 
   return (
@@ -44,7 +55,7 @@ const Products = (props) => {
             key={`product${product.id}`}
             item={product}
             onClickEdit={() => onClickEdit(product)}
-            onClickDelete={onClickDelete}
+            onClickDelete={(e) => onClickDelete(e, product.id)}
           />
         ))
       ) : (

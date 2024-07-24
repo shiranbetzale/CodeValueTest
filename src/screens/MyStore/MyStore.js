@@ -4,15 +4,55 @@ import axios from "axios";
 import Products from "../../components/Products/Products";
 import Form from "../../components/Form/Form";
 import styles from "./MyStore.module.css";
+import moment from "moment";
 
 const MyStore = () => {
   const [productsList, setProductsList] = useState();
   const [selectedProduct, setSelectedProduct] = useState();
   const [showForm, setShowForm] = useState(false);
+  const [mode, setMode] = useState();
+
+  //add new item
+  const onAdd = (formData) => {
+    const id = productsList.length + 1;
+
+    const newProduct = {
+      id,
+      name: formData.name,
+      description: formData.description,
+      price: formData.price,
+      createdDatelet: moment(new Date()).format("DD/MM/YYYY"),
+    };
+
+    const productsListCopy = [...productsList, newProduct];
+    setProductsList(productsListCopy);
+  };
+
+  //edit item
+  const onEdit = (formData) => {
+    const productsListCopy = [...productsList];
+    productsList[selectedProduct.id - 1].name = formData.name;
+    productsList[selectedProduct.id - 1].description = formData.description;
+    productsList[selectedProduct.id - 1].price = formData.price;
+
+    setProductsList(productsListCopy);
+  };
+
+  //delete item
+  const onClickDelete = (e, id) => {
+    e.stopPropagation();
+    setShowForm(false);
+
+    const productsListCopy = [...productsList].filter(
+      (product) => product.id !== id
+    );
+    setProductsList(productsListCopy);
+  };
 
   const onClickEdit = (product) => {
     setSelectedProduct(product);
     setShowForm(true);
+    setMode("edit");
   };
 
   const sortByName = (list) => {
@@ -47,6 +87,7 @@ const MyStore = () => {
       description: "",
       price: "",
     });
+    setMode("add");
   };
 
   return (
@@ -59,13 +100,19 @@ const MyStore = () => {
             onClickEdit={onClickEdit}
             onClickAdd={onClickAdd}
             sortByName={sortByName}
+            onClickDelete={onClickDelete}
           />
         </div>
         <div className={styles.container}>
           {showForm && (
             <>
               <h2>{selectedProduct?.name}</h2>
-              <Form item={selectedProduct} />
+              <Form
+                item={selectedProduct}
+                mode={mode}
+                onAdd={onAdd}
+                onEdit={onEdit}
+              />
             </>
           )}
         </div>
