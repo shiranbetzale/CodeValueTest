@@ -8,7 +8,7 @@ const Menu = (props) => {
   return (
     <div className={styles.container}>
       <button onClick={onClickAdd} className={styles.addButton}>
-        add
+        add new product
       </button>
       <CustomInput
         name="search"

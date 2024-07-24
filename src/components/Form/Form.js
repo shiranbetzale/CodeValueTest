@@ -1,9 +1,3 @@
-// ID (number, unique
-// 2. Name (string, up to 30 characters, mandatory)
-// 3. Description (string, up to 200 characters, optional)
-// 4. Price (number, larger than zero, mandatory)
-// 5. Creation Date (Date, mandatory)
-
 import { useState, useEffect } from "react";
 import CustomInput from "./../CustomInput/CustomInput";
 import CustomImg from "./../CustomImg/CustomImg";
@@ -21,6 +15,11 @@ const Form = (props) => {
 
   useEffect(() => {
     if (!item) return;
+    setErrors({
+      name: "",
+      description: "",
+      price: "",
+    });
     setFormData({
       name: item.name,
       description: item.description,

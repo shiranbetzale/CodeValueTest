@@ -15,8 +15,19 @@ const MyStore = () => {
     setShowForm(true);
   };
 
-  const onClickAdd = () => {
-    setShowForm(true);
+  const sortByName = (list) => {
+    return list.sort((a, b) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    });
   };
 
   useEffect(() => {
@@ -24,10 +35,19 @@ const MyStore = () => {
       .get("/data/products.json")
       .then((res) => {
         console.log(res.data);
-        setProductsList(res.data.products);
+        setProductsList(sortByName(res.data.products));
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const onClickAdd = () => {
+    setShowForm(true);
+    setSelectedProduct({
+      name: "",
+      description: "",
+      price: "",
+    });
+  };
 
   return (
     <div>
@@ -38,6 +58,7 @@ const MyStore = () => {
             productsList={productsList}
             onClickEdit={onClickEdit}
             onClickAdd={onClickAdd}
+            sortByName={sortByName}
           />
         </div>
         <div className={styles.container}>
