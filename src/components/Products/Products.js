@@ -3,8 +3,15 @@ import Card from "./../Card/Card";
 import Menu from "./../Menu/Menu";
 
 const Products = (props) => {
-  const { onClickDelete, productsList, onClickEdit, onClickAdd, sortByName } =
-    props;
+  const {
+    setSelectedSort,
+    onClickDelete,
+    productsList,
+    onClickEdit,
+    onClickAdd,
+    sortByName,
+    sortByDate,
+  } = props;
   const [productsListAfterSearch, setProductsListAfterSearch] = useState();
   const [searchValue, setSearchValue] = useState();
 
@@ -26,16 +33,13 @@ const Products = (props) => {
 
   const onSelectChanged = (e) => {
     let afterSort;
+    setSelectedSort(e.target.value);
     if (e.target.value === "name") {
       //sort by name
       afterSort = sortByName(productsListAfterSearch);
     } else {
       //sort by date
-      afterSort = productsListAfterSearch?.sort(
-        (a, b) =>
-          new Date(...a.createdDate.split("/").reverse()) -
-          new Date(...b.createdDate.split("/").reverse())
-      );
+      afterSort = sortByDate(productsListAfterSearch);
     }
 
     setProductsListAfterSearch((prev) => [...prev], afterSort);

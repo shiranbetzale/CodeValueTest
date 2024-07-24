@@ -11,20 +11,49 @@ const MyStore = () => {
   const [selectedProduct, setSelectedProduct] = useState();
   const [showForm, setShowForm] = useState(false);
   const [mode, setMode] = useState();
+  const [selectedSort, setSelectedSort] = useState("name");
+
+  const sortByName = (list) => {
+    return list.sort((a, b) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    });
+  };
+
+  const sortByDate = (list) => {
+    return list.sort(
+      (a, b) =>
+        new Date(...a.createdDate.split("/").reverse()) -
+        new Date(...b.createdDate.split("/").reverse())
+    );
+  };
 
   //add new item
   const onAdd = (formData) => {
-    let id = productsList[productsList.length - 1].id + 1;
+    let id = Math.max(...productsList.map((o) => o.id)) + 1;
     const newProduct = {
       id,
       name: formData.name,
       description: formData.description,
       price: formData.price,
-      createdDatelet: moment(new Date()).format("DD/MM/YYYY"),
+      createdDate: moment(new Date()).format("DD/MM/YYYY"),
     };
 
     const productsListCopy = [...productsList, newProduct];
-    setProductsList(productsListCopy);
+    if (selectedSort === "name") {
+      setProductsList(sortByName(productsListCopy));
+    } else {
+      setProductsList(sortByDate(productsListCopy));
+    }
+    setShowForm(false);
   };
 
   //edit item
@@ -34,7 +63,11 @@ const MyStore = () => {
     productsList[selectedProduct.id - 1].description = formData.description;
     productsList[selectedProduct.id - 1].price = formData.price;
 
-    setProductsList(productsListCopy);
+    if (selectedSort === "name") {
+      setProductsList(sortByName(productsListCopy));
+    } else {
+      setProductsList(sortByDate(productsListCopy));
+    }
   };
 
   //delete item
@@ -52,21 +85,6 @@ const MyStore = () => {
     setSelectedProduct(product);
     setShowForm(true);
     setMode("edit");
-  };
-
-  const sortByName = (list) => {
-    return list.sort((a, b) => {
-      const nameA = a.name.toUpperCase();
-      const nameB = b.name.toUpperCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-
-      return 0;
-    });
   };
 
   useEffect(() => {
@@ -95,10 +113,12 @@ const MyStore = () => {
       <div className={styles.myAppContainer}>
         <div className={styles.container}>
           <Products
+            setSelectedSort={setSelectedSort}
             productsList={productsList}
             onClickEdit={onClickEdit}
             onClickAdd={onClickAdd}
             sortByName={sortByName}
+            sortByDate={sortByDate}
             onClickDelete={onClickDelete}
           />
         </div>

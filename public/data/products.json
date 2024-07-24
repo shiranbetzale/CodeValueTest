@@ -5,35 +5,35 @@
             "name": "product2",
             "description": "בקבוק",
             "price":15,
-            "createdDate":"06/07/24"
+            "createdDate":"06/07/2024"
         },
         {
             "id": 1,
             "name": "product1",
             "description": "מוצץ",
             "price":10,
-            "createdDate":"08/07/24"
+            "createdDate":"08/07/2024"
         },
         {
             "id": 3,
             "name": "product3",
             "description": "טיטולים",
             "price":35,
-            "createdDate":"11/07/24"
+            "createdDate":"11/07/2024"
         },
         {
             "id": 5,
             "name": "product5",
             "description": "גופיות",
             "price":8,
-            "createdDate":"01/07/24"
+            "createdDate":"01/07/2024"
         },
         {
             "id": 4,
             "name": "product4",
             "description": "חיתולי בד",
             "price":7,
-            "createdDate":"05/07/24"
+            "createdDate":"05/07/2024"
         }
     ]
 }
