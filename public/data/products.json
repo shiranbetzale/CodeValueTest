@@ -1,0 +1,39 @@
+{
+    "products": [
+        {
+            "id": "1",
+            "name": "product1",
+            "description": "מוצץ",
+            "price":10,
+            "createdDate":"10.10.24"
+        },
+        {
+            "id": "2",
+            "name": "product2",
+            "description": "בקבוק",
+            "price":15,
+            "createdDate":"10.10.24"
+        },
+        {
+            "id": "3",
+            "name": "product3",
+            "description": "טיטולים",
+            "price":35,
+            "createdDate":"10.10.24"
+        },
+        {
+            "id": "4",
+            "name": "product4",
+            "description": "חיתולי בד",
+            "price":7,
+            "createdDate":"10.10.24"
+        },
+        {
+            "id": "5",
+            "name": "product5",
+            "description": "גופיות",
+            "price":8,
+            "createdDate":"10.10.24"
+        }
+    ]
+}

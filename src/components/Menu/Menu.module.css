@@ -1,0 +1,11 @@
+.addButton{
+    background-color: green;
+    margin-right: 10px;
+}
+.container{
+    display: flex;
+    margin-bottom: 10px;
+}
+.search{
+    margin-right: 10px;
+}
