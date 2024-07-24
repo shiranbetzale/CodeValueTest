@@ -14,8 +14,7 @@ const MyStore = () => {
 
   //add new item
   const onAdd = (formData) => {
-    const id = productsList.length + 1;
-
+    let id = productsList[productsList.length - 1].id + 1;
     const newProduct = {
       id,
       name: formData.name,

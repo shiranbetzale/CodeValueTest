@@ -30,7 +30,7 @@ const CustomInput = (props) => {
         />
       ) : (
         <textarea
-          placeHolder={placeHolder}
+          placeholder={placeHolder}
           onChange={handleChange}
           name={name}
           type={type}
