@@ -5,6 +5,7 @@ import Products from "../../components/Products/Products";
 import Form from "../../components/Form/Form";
 import styles from "./MyStore.module.css";
 import moment from "moment";
+import { sortByName, sortByDate } from "../../utils/general";
 
 const MyStore = () => {
   const [productsList, setProductsList] = useState();
@@ -12,29 +13,6 @@ const MyStore = () => {
   const [showForm, setShowForm] = useState(false);
   const [mode, setMode] = useState();
   const [selectedSort, setSelectedSort] = useState("name");
-
-  const sortByName = (list) => {
-    return list.sort((a, b) => {
-      const nameA = a.name.toUpperCase();
-      const nameB = b.name.toUpperCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-
-      return 0;
-    });
-  };
-
-  const sortByDate = (list) => {
-    return list.sort(
-      (a, b) =>
-        new Date(...a.createdDate.split("/").reverse()) -
-        new Date(...b.createdDate.split("/").reverse())
-    );
-  };
 
   //add new item
   const onAdd = (formData) => {
@@ -48,6 +26,7 @@ const MyStore = () => {
     };
 
     const productsListCopy = [...productsList, newProduct];
+
     if (selectedSort === "name") {
       setProductsList(sortByName(productsListCopy));
     } else {
@@ -117,8 +96,6 @@ const MyStore = () => {
             productsList={productsList}
             onClickEdit={onClickEdit}
             onClickAdd={onClickAdd}
-            sortByName={sortByName}
-            sortByDate={sortByDate}
             onClickDelete={onClickDelete}
           />
         </div>

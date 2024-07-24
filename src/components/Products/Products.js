@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Card from "./../Card/Card";
 import Menu from "./../Menu/Menu";
+import { sortByName, sortByDate } from "../../utils/general";
 
 const Products = (props) => {
   const {
@@ -9,9 +10,8 @@ const Products = (props) => {
     productsList,
     onClickEdit,
     onClickAdd,
-    sortByName,
-    sortByDate,
   } = props;
+
   const [productsListAfterSearch, setProductsListAfterSearch] = useState();
   const [searchValue, setSearchValue] = useState();
 
