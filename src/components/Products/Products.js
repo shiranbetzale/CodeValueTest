@@ -7,18 +7,20 @@ const Products = (props) => {
   const {
     setSelectedSort,
     onClickDelete,
-    productsList,
     onClickEdit,
     onClickAdd,
+    newList,
+    setNewList,
+    productsList,
   } = props;
 
   const [productsListAfterSearch, setProductsListAfterSearch] = useState();
   const [searchValue, setSearchValue] = useState();
 
   useEffect(() => {
-    if (!productsList) return;
-    setProductsListAfterSearch(productsList);
-  }, [productsList]);
+    if (!newList) return;
+    setProductsListAfterSearch(newList);
+  }, [newList]);
 
   const onSearch = (e) => {
     setSearchValue(e.target.value);
@@ -29,6 +31,7 @@ const Products = (props) => {
         item?.description?.includes(e.target.value)
     );
     setProductsListAfterSearch(filter);
+    setNewList(filter);
   };
 
   const onSelectChanged = (e) => {
@@ -43,6 +46,7 @@ const Products = (props) => {
     }
 
     setProductsListAfterSearch((prev) => [...prev], afterSort);
+    setNewList((prev) => [...prev], afterSort);
   };
 
   return (

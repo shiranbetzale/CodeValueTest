@@ -8,15 +8,16 @@ import moment from "moment";
 import { sortByName, sortByDate } from "../../utils/general";
 
 const MyStore = () => {
-  const [productsList, setProductsList] = useState();
+  const [productsList, setProductsList] = useState(); //orginal list
   const [selectedProduct, setSelectedProduct] = useState();
   const [showForm, setShowForm] = useState(false);
   const [mode, setMode] = useState();
   const [selectedSort, setSelectedSort] = useState("name");
+  const [newList, setNewList] = useState();
 
   //add new item
   const onAdd = (formData) => {
-    let id = Math.max(...productsList.map((o) => o.id)) + 1;
+    let id = Math.max(...newList.map((o) => o.id)) + 1;
     const newProduct = {
       id,
       name: formData.name,
@@ -25,28 +26,36 @@ const MyStore = () => {
       createdDate: moment(new Date()).format("DD/MM/YYYY"),
     };
 
-    const productsListCopy = [...productsList, newProduct];
+    const productsListCopy = [...newList, newProduct];
 
     if (selectedSort === "name") {
+      setNewList(sortByName(productsListCopy));
       setProductsList(sortByName(productsListCopy));
     } else {
       setProductsList(sortByDate(productsListCopy));
+      setNewList(sortByDate(productsListCopy));
     }
     setShowForm(false);
   };
 
   //edit item
   const onEdit = (formData) => {
-    const productsListCopy = [...productsList];
-    productsList[selectedProduct.id - 1].name = formData.name;
-    productsList[selectedProduct.id - 1].description = formData.description;
-    productsList[selectedProduct.id - 1].price = formData.price;
+    const productsListCopy = [...newList];
+    const findIndex = productsListCopy.findIndex(
+      (x) => x.id === selectedProduct.id
+    );
+    productsListCopy[findIndex].name = formData.name;
+    productsListCopy[findIndex].description = formData.description;
+    productsListCopy[findIndex].price = formData.price;
 
     if (selectedSort === "name") {
+      setNewList(sortByName(productsListCopy));
       setProductsList(sortByName(productsListCopy));
     } else {
+      setNewList(sortByDate(productsListCopy));
       setProductsList(sortByDate(productsListCopy));
     }
+    setShowForm(false);
   };
 
   //delete item
@@ -54,9 +63,10 @@ const MyStore = () => {
     e.stopPropagation();
     setShowForm(false);
 
-    const productsListCopy = [...productsList].filter(
+    const productsListCopy = [...newList].filter(
       (product) => product.id !== id
     );
+    setNewList(productsListCopy);
     setProductsList(productsListCopy);
   };
 
@@ -72,6 +82,7 @@ const MyStore = () => {
       .then((res) => {
         console.log(res.data);
         setProductsList(sortByName(res.data.products));
+        setNewList(sortByName(res.data.products));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -97,6 +108,8 @@ const MyStore = () => {
             onClickEdit={onClickEdit}
             onClickAdd={onClickAdd}
             onClickDelete={onClickDelete}
+            newList={newList}
+            setNewList={setNewList}
           />
         </div>
         <div className={styles.container}>
